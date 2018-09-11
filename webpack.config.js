@@ -18,15 +18,15 @@ module.exports = {
         new HtmlWebpackPlugin({
            title: 'Output Management'
         }),
-        new webpack.NamedModulesPlugin(), // 添加了 NamedModulesPlugin，以便更容易查看要修补(patch)的依赖
-        new webpack.HotModuleReplacementPlugin()
+        // new webpack.NamedModulesPlugin(), // 添加了 NamedModulesPlugin，以便更容易查看要修补(patch)的依赖
+        // new webpack.HotModuleReplacementPlugin()
     ],
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
-        publicPath: '/'
+        publicPath: ''
     },
-    mode: "production",// 从 webpack 4 开始，也可以通过 "mode" 配置选项轻松切换到压缩输出，只需设置为 "production"
+    // mode: "production",// 从 webpack 4 开始，也可以通过 "mode" 配置选项轻松切换到压缩输出，只需设置为 "production"
     //也可以在命令行接口中使用 --optimize-minimize 标记，来使用 UglifyJSPlugin
     module: {
         rules: [
