@@ -11,18 +11,18 @@ module.exports = {
     devtool: 'inline-source-map',// 可以定位到报错信息的具体文件和行号
     devServer: {
        contentBase: './dist',
-       host: true
+       hot: true
     }, // 这个配置告知 webpack-dev-server，在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
            title: 'Output Management'
         }),
-        // new webpack.NamedModulesPlugin(), // 添加了 NamedModulesPlugin，以便更容易查看要修补(patch)的依赖
-        // new webpack.HotModuleReplacementPlugin()
+        new webpack.NamedModulesPlugin(), // 添加了 NamedModulesPlugin，以便更容易查看要修补(patch)的依赖
+        new webpack.HotModuleReplacementPlugin()
     ],
     output: {
-        filename: '[name].bundle.js',
+        filename: '[name].[chunkhash].js',
         path: path.resolve(__dirname, 'dist'),
         publicPath: ''
     },
