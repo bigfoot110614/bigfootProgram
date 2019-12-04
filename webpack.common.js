@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: './src/index.js',
+        app: './src/app.js',
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
@@ -16,6 +16,19 @@ module.exports = {
      //        // CommonsChunkPlugin 插件将 lodash 分离到单独的 chunk，并且将其从 main bundle 中移除
      // }) // 这个没有用对
     ],
+    module: {
+        rules: [
+            {
+                test: /\.less$/,
+                use: ['style-loader','css-loader', 'less-loader']
+            },
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                use: ['babel-loader']
+            }
+        ]
+    },
     output: {
         filename: '[name].bundle.js',
         chunkFilename: '[name].bundle.js',

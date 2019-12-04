@@ -1,0 +1,4 @@
+{
+  "presets": ["react","es2015","stage-0","stage-1"],
+  "plugins": ["react-hot-loader/babel",["import", { "libraryName": "antd", "style": true }],"transform-runtime","transform-class-properties"]
+}
