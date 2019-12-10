@@ -36,6 +36,7 @@ class HelloMessage extends Component {
 
 render(<HelloMessage />, mountNode);
 
+console.log(hot, process.env, 'enen')
 if(hot && process.env.NODE_ENV !== 'production'){
-    hot.accept();
+    // hot.accept();
 }

@@ -2,8 +2,10 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
-    devtool: 'inline-source-map', // 生产环境中不要使用 会增加包大小
+    mode: "development", 
+    devtool: 'inline-source-map', // 生产环境中不要使用 会增加包大小 开发环境鼓励使用源码映射 方便调试
     devServer: {
-        contentBase: './dist'
+        contentBase: './dist',
+        // port: '9090'
     }
 });
