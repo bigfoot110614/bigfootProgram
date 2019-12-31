@@ -16,11 +16,6 @@ module.exports = {
      //        name: 'common' // 指定公共 bundle 的名称。
      //        // CommonsChunkPlugin 插件将 lodash 分离到单独的 chunk，并且将其从 main bundle 中移除
      // }) // 这个没有用对
-        // new webpack.DefinePlugin({
-        //     'process.env': {
-        //         'NODE_ENV': JSON.stringify('production')
-        //     }
-        // })
     ],
     module: {
         rules: [

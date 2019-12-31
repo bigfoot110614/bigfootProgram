@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>mudu-player.js demo</title>
+  <style>
+    .container {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 800px;
+      padding-bottom: 50px;
+    }
+    h1,h2,p,div {
+      text-align: center;
+    }
+    .config-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 50%;
+    }
+    .btn-wrap {
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+    }
+    .btn-wrap input {
+      font-size: 20px;
+    }
+    .url-wrap {
+      padding: 20px;
+      word-break: break-all;
+      word-wrap: break-word;
+    }
+    textarea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      resize: none;
+    }
+    #player {
+      margin: 0 auto;
+    }
+    .log-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 50%;
+      border: 1px solid #000;
+    }
+    #log {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .log-item {
+      text-align: left;
+      padding-left: 5px;
+      margin: 0;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1><a href="https://git.mudu.tv/front-end/mudu-player">mudu-player.js</a></h1>
+    <h2>demo <span class="blue" id="version"></span></h2>
+    <p>mudu-player support hls/rtmp/flv in ie8+/chrome/safari/firefox</p>
+    <p>for basic usage, visit <a href="./simple.html">here.</a></p>
+
+    <span style="margin-top: 20px; display: block; text-align: left;">config: </span>
+    <div class="config-wrap">
+      <textarea id="config"></textarea>
+    </div>
+    <div class="url-wrap">
+      <span style="font-weight: 900;">分享url:  </span>
+      <a href="#" id="link"></a>
+    </div>
+    <div class="btn-wrap">
+      <input type="button" id="load" value="加载">
+    </div>
+    <div class="player-wrap">
+      <div id="player"></div>
+    </div>
+
+    <span style="margin-top: 20px; display: block; text-align: left;">log:
+      <input style="float: right;" type="button" id="clearLog" value="清除log">
+    </span>
+    <div class="log-wrap">
+      <div id="log"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.bootcss.com/es6-promise/4.1.1/es6-promise.min.js"></script>
+  <script>
+    window.Promise = window.Promise || window.ES6Promise
+  </script>
+  <script src="https://cdn.bootcss.com/Base64/1.0.1/base64.min.js"></script>
+  <script src="https://cdn.bootcss.com/es5-shim/4.5.10/es5-shim.min.js"></script>
+  <script src="https://cdn.bootcss.com/es5-shim/4.5.10/es5-sham.min.js"></script>
+  <script src="../mudu-player.js"></script>
+  <script src="https://cdn.bootcss.com/js-url/2.5.3/url.min.js"></script>
+
+  <script>
+    var versionDom = document.getElementById('version')
+    var loadDom = document.getElementById('load')
+    var configArea = document.getElementById('config')
+    var linkDom = document.getElementById('link')
+    var logDom = document.getElementById('log')
+    var clearLogDom = document.getElementById('clearLog')
+
+    var version = muduPlayer.VERSION
+    versionDom.innerHTML = 'v' + version
+
+    var defaultConfig = {
+      file: 'http://myun-hw-s3.myun.tv/n856xo5m/1535512040681946728_284_480p.m3u8'
+    }
+    var config = window.atob(decodeURIComponent(url('?config') || ''))
+    config = config ? JSON.parse(config) : defaultConfig
+    var strConfig = safeJSONStringify(config)
+
+    var link = getUrl(strConfig)
+    linkDom.href = link
+    linkDom.innerHTML = link
+    config.playlist = [
+        {
+          // isLive: true,
+          sources: [
+            // 默认播放第一个，即标清
+            {
+              file: 'http://myun-hw-s3.myun.tv/n856xo5m/1535512040681946728_284_480p.m3u8',
+              label: '标清'
+            },
+            {
+              file: 'http://myun-hw-s3.myun.tv/n856xo5m/1535512040681946728_284_480p.m3u8',
+              label: '高清'
+            },
+            {
+              file: 'http://myun-hw-s3.myun.tv/n856xo5m/1535512040681946728_284_480p.m3u8',
+              label: '超清'
+            },
+          ]
+        }
+      ]
+
+      config.playbackRateControls = true,
+      config.playbackRates = [{
+        label: '1x',
+        playbackRate: 1
+      }, {
+        label: '1.25x',
+        playbackRate: 1.25
+      }, {
+        label: '1.5x',
+        playbackRate: 1.5
+      }, {
+        label: '2x',
+        playbackRate: 2
+      }]
+      config.plugin =  {
+          x5: {
+            // layer: true,
+            inline: true
+          }
+      }
+      config.providerOrder = ['hlsjs']
+      strConfig = safeJSONStringify(config)
+      configArea.value = strConfig
+
+    muduPlayer('player').setup(config)
+    muduPlayer('player').on('all', function () {
+      var args = [].slice.call(arguments)
+      var evt = args.shift()
+      var data = args.shift()
+      var time = moment().format('HH:mm:ss')
+      var title
+      var desc
+
+      if (evt === 'delegate-model') {
+        title = 'call.' + data.fn
+        desc = safeJSONStringify(data.args)
+      } else {
+        title = 'event.' + evt
+        desc = safeJSONStringify(data)
+      }
+
+      logIt(time, title, desc)
+    })
+
+    loadDom.onclick = function () {
+      var config = configArea.value
+      var url = getUrl(config)
+      location.href = url
+    }
+
+    clearLogDom.onclick = function () {
+      logDom.innerHTML = ''
+    }
+
+    function getUrl (strConfig) {
+      var origin = location.origin
+      var pathname = location.pathname
+      var query = '?config=' + encodeURIComponent(window.btoa(strConfig))
+      return (origin + pathname + query)
+    }
+
+    function logIt (time, title, desc) {
+      var text = (time + ' | [' + title + ']: ' + desc)
+      var p = document.createElement('p')
+      var lastChild = logDom.lastChild
+      p.innerHTML = text
+      p.setAttribute('atitle', title)
+      p.setAttribute('class', 'log-item')
+
+      if (lastChild && lastChild.getAttribute('atitle') === 'event.time' && title === 'event.time') {
+        logDom.removeChild(lastChild)
+      }
+      logDom.appendChild(p)
+      console.log(text)
+    }
+
+    function moment (d) {
+      d = d || new Date()
+      function format (f) {
+        f = f || 'YYYY-MM-DD HH:mm:ss.SSS'
+        var YYYY = d.getFullYear()
+        var MM = d.getMonth()
+        var DD = d.getDate()
+        var HH = d.getHours()
+        var mm = d.getMinutes()
+        var ss = d.getSeconds()
+        var SSS = d.getMilliseconds()
+        var fd = f
+          .replace('YYYY', YYYY)
+          .replace('MM', MM)
+          .replace('DD', DD)
+          .replace('HH', HH)
+          .replace('mm', mm)
+          .replace('ss', ss)
+          .replace('SSS', SSS)
+        return fd
+      }
+      return {
+        format: format
+      }
+    }
+
+    function safeJSONStringify (json) {
+      var cache = []
+      return JSON.stringify(json, function (key, value) {
+        if (typeof value === 'object' && value !== null) {
+          if (cache.indexOf(value) !== -1) {
+            return
+          }
+          cache.push(value)
+        }
+        return value
+      })
+    }
+
+
+  </script>
+</body>
+</html>
