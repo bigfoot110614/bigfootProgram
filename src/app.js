@@ -20,6 +20,7 @@ import React, { Component } from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
 import {hot} from 'react-hot-loader'
+import { User } from './user/index'
 
 let div = document.createElement('div');
 div.setAttribute('id', 'app');
@@ -29,7 +30,9 @@ const mountNode = document.getElementById('app');
 
 class HelloMessage extends Component {
     render() {
-        return <div>Hello</div>;
+        return <div>
+            <User />
+        </div>;
     }
 }
 
