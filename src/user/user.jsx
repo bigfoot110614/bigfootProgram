@@ -15,7 +15,8 @@ export default class User extends Component {
     }
 
     componentDidMount(){
-        window.fetch('http://localhost:3000/username')
+        console.log(window.fetch)
+        window.fetch('/username')
         .then(data => {
             console.log(data)
         }).finally(a => {

@@ -7,8 +7,8 @@ const httpProxy = require('http-proxy');
 const serverConfig = require('./server/config');
 
 const app = express();
-// const config = require('./webpack.config.js');
-const config = require('./webpack.common.js')
+const config = require('./webpack.dev.js');
+// const config = require('./webpack.common.js')
 const compiler = webpack(config);
 
 // Tell express to use the webpack-dev-middleware and use the webpack.config.js
@@ -26,8 +26,6 @@ app.use(webpackDevMiddleware(compiler, {
 // https://www.npmjs.com/package/http-proxy#options
 app.use('/username', (req, res) => {
     console.log(req, res, 'server')
-    // proxy.web(req, res)
-    // res.end('1')
 })
 
 // Serve the files on port 3000.
@@ -35,8 +33,8 @@ app.listen(9999, function () {
     console.log('Example app listening on port 9999!\n');
 });
 
-// mongoose.connect(serverConfig.serverURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-//     if (err) throw err;
-//     console.log('create success')
-//     // app.listen()
-// })
+// todo: 连接数据库, 增加并查找字段
+mongoose.connect(serverConfig.serverURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+    if (err) throw err;
+    console.log('create mongo success')
+})
