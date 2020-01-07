@@ -17,13 +17,16 @@ const compiler = webpack(config);
 //     publicPath: config.output.publicPath
 // }));
 
+// const proxy = httpProxy.createProxyServer({
+//     target: 'localhost:8080'
+// })
 
-
+// TODO: 添加httpproxy, 支持ws的http可编程库, 添加反向代理
+// https://www.ruphi.cn/archives/328/
+// https://www.npmjs.com/package/http-proxy#options
 app.use('/username', (req, res) => {
-    // console.log(req, res, 'server')
-    httpProxy.createProxyServer({
-        target: 'localhost:8080'
-    })
+    // console.log(req, res, 'server', proxy)
+    // proxy.web(req, res)
     // res.end('1')
 })
 
