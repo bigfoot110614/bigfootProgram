@@ -13,9 +13,9 @@ const compiler = webpack(config);
 
 // Tell express to use the webpack-dev-middleware and use the webpack.config.js
 // configuration file as a base.
-// app.use(webpackDevMiddleware(compiler, {
-//     publicPath: config.output.publicPath
-// }));
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+}));
 
 // const proxy = httpProxy.createProxyServer({
 //     target: 'localhost:8080'
@@ -25,18 +25,18 @@ const compiler = webpack(config);
 // https://www.ruphi.cn/archives/328/
 // https://www.npmjs.com/package/http-proxy#options
 app.use('/username', (req, res) => {
-    // console.log(req, res, 'server', proxy)
+    console.log(req, res, 'server')
     // proxy.web(req, res)
     // res.end('1')
 })
 
 // Serve the files on port 3000.
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!\n');
+app.listen(9999, function () {
+    console.log('Example app listening on port 9999!\n');
 });
 
-mongoose.connect(serverConfig.serverURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-    if (err) throw err;
-    console.log('create success')
-    // app.listen()
-})
+// mongoose.connect(serverConfig.serverURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+//     if (err) throw err;
+//     console.log('create success')
+//     // app.listen()
+// })

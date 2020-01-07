@@ -6,7 +6,7 @@ const webpack = require('webpack');
 module.exports = merge(common, {
     // devtool: 'source-map', // 生产环境中不要使用 会增加包大小
     mode: 'production',
-    devServer: {
+    devServer: { // 添加dev-server, 本地可以启动一个服务
         contentBase: './dist',
         port: 9090
     },

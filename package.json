@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
-    "watch": "webpack --watch",
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "watch": "webpack --watch & node server.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js & node server.js",
     "server": "node server.js"
   },
   "keywords": [],

@@ -25,7 +25,7 @@ export default class User extends Component {
 
     render () {
         return(<div>
-           hi 
+           hi, username
         </div>)
     }
 }
