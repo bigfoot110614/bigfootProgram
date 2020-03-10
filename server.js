@@ -11,6 +11,9 @@ const config = require('./webpack.dev.js');
 // const config = require('./webpack.common.js')
 const compiler = webpack(config);
 
+// api router
+const userRouter = require('./api/user.js')
+
 // Tell express to use the webpack-dev-middleware and use the webpack.config.js
 // configuration file as a base.
 app.use(webpackDevMiddleware(compiler, {
@@ -24,9 +27,9 @@ app.use(webpackDevMiddleware(compiler, {
 // TODO: 添加httpproxy, 支持ws的http可编程库, 添加反向代理
 // https://www.ruphi.cn/archives/328/
 // https://www.npmjs.com/package/http-proxy#options
-app.use('/username', (req, res) => {
-    console.log(req, res, 'server')
-})
+// app.use('/', require('./api/user.js'))
+app.use('/', require('./api/index.js')) // error: requires a middleware function but got a Object, 如果将indexmodule.exports导出即可
+// app.use('/', userRouter)
 
 // Serve the files on port 3000.
 app.listen(9999, function () {
@@ -34,7 +37,7 @@ app.listen(9999, function () {
 });
 
 // todo: 连接数据库, 增加并查找字段
-mongoose.connect(serverConfig.serverURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-    if (err) throw err;
-    console.log('create mongo success')
-})
+// mongoose.connect(serverConfig.serverURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+//     if (err) throw err;
+//     console.log('create mongo success')
+// })

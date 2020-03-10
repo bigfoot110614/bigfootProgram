@@ -1,11 +1,22 @@
-import Express from 'express'
+// import Express from 'express' 报错 unexpected identifier
+const Express = require('express')
+const User = require('../models/index.js')
 
 
-const Router = Express.Router()
+const router = Express.Router()
 
-Router.get('/username', (req, res) => {
-    console.log('username', req, res)
-    res.end(200)
+router.get('/username', (req, res) => {
+    User.insertMany([{
+        name: 'anan' 
+    }], (err, res) => {
+        if (err) throw err
+        console.log('insert')
+    })
+    // User.findOne({
+    //     name,
+    // })
+    console.log('username' )
+    res.end('33')
 })
 
-module.exports = Router
+module.exports = router

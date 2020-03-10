@@ -1,4 +1,8 @@
-import userSchema from '../schemas/user'
-import mongoose from 'mongoose'
+// import userSchema from '../schemas/user'
+// import mongoose from 'mongoose'
 
-module.exports = new mongoose.model("User", userSchema)
+
+const userSchema = require('../schemas/user.js')
+const mongoose = require('mongoose')
+
+module.exports = mongoose.model("User", userSchema)

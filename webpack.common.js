@@ -20,8 +20,13 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.css$/,
+                loaders: ['style-loader', 'css-loader']
+            },
+            {
                 test: /\.less$/,
-                use: ['style-loader','css-loader', 'less-loader']
+                // use: 'less-loader',
+                loaders: ['style-loader', 'less-loader']
             },
             {
                 test: /\.jsx?$/,
